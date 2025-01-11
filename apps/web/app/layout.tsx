@@ -7,7 +7,6 @@ import {
   SidebarTrigger
 } from "@workspace/ui/components/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
-import { Separator } from "@workspace/ui/components/separator"
 
 const fontSans = Geist({
   subsets: ["latin"],

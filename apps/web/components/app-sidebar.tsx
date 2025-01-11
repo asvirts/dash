@@ -1,9 +1,72 @@
-import { Sidebar, SidebarContent } from "@workspace/ui/components/sidebar"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem
+} from "@workspace/ui/components/sidebar"
+
+import { Calendar, Home, Inbox, List, Search, Settings } from "lucide-react"
+
+// Menu items.
+const items = [
+  {
+    title: "Home",
+    url: "/",
+    icon: Home
+  },
+  {
+    title: "Inbox",
+    url: "/inbox",
+    icon: Inbox
+  },
+  {
+    title: "Tasks",
+    url: "/tasks",
+    icon: List
+  },
+  {
+    title: "Calendar",
+    url: "/calendar",
+    icon: Calendar
+  },
+  {
+    title: "Search",
+    url: "/search",
+    icon: Search
+  },
+  {
+    title: "Settings",
+    url: "/settings",
+    icon: Settings
+  }
+]
 
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarContent />
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
     </Sidebar>
   )
 }
