@@ -7,6 +7,7 @@ import {
   SidebarTrigger
 } from "@workspace/ui/components/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
+import { Analytics } from "@vercel/analytics/react"
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -35,6 +36,7 @@ export default function RootLayout({
             {children}
           </main>
         </SidebarProvider>
+        <Analytics />
       </body>
     </html>
   )
