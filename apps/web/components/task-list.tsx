@@ -69,7 +69,8 @@ export function TaskList() {
       const task: Task = {
         id: Math.random().toString(),
         title: newTask,
-        dueDate: new Date().toISOString().split("T")[0],
+        dueDate:
+          new Date().toISOString().split("T")[0] ?? new Date().toISOString(),
         assignee: {
           name: "You",
           avatar: "/placeholder.svg"
