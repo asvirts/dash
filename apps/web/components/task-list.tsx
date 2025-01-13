@@ -1,4 +1,5 @@
-import { createClient } from "@/utils/supabase/server"
+"use client"
+import { supabase } from "@/utils/supabase/client"
 import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
 import {
@@ -10,7 +11,7 @@ import {
   TableRow
 } from "@workspace/ui/components/table"
 import { Calendar, Plus } from "lucide-react"
-import { redirect } from "next/navigation"
+import { useState } from "react"
 
 interface Task {
   id: string
@@ -21,17 +22,34 @@ interface Task {
   completed: boolean
 }
 
-export async function TaskList() {
-  const supabase = createClient()
+function AddTaskForm() {
+  const [newTask, setNewTask] = useState("")
 
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect("/sign-in")
+  const addTask = async () => {
+    await supabase
+      .from("Tasks")
+      .insert([{ title: newTask }])
+      .select()
   }
 
+  return (
+    <div className="flex items-center space-x-2">
+      <Input
+        placeholder="Add task..."
+        value={newTask}
+        onChange={(e) => setNewTask(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") addTask()
+        }}
+      />
+      <Button onClick={addTask}>
+        <Plus className="h-4 w-4" />
+      </Button>
+    </div>
+  )
+}
+
+export async function TaskList() {
   try {
     const { data: tasks, error } = await supabase
       .from("Tasks")
@@ -48,27 +66,9 @@ export async function TaskList() {
       return <div>No tasks found</div>
     }
 
-    console.log("Tasks loaded:", tasks)
-
-    // Rest of your component code...
     return (
       <div className="space-y-4">
-        <div className="flex items-center space-x-2">
-          <Input
-            placeholder="Add task..."
-            // onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            //     setNewTask(e.target.value)
-            // }
-            //   onKeyDown={(e) => {
-            //     if (e.key === "Enter") {
-            //       addTask()
-            //     }
-            //   }}
-          />
-          <Button>
-            <Plus className="h-4 w-4" />
-          </Button>
-        </div>
+        <AddTaskForm />
         <Table>
           <TableHeader>
             <TableRow>
