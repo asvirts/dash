@@ -10,6 +10,7 @@ import {
   TableRow
 } from "@workspace/ui/components/table"
 import { Calendar, Plus } from "lucide-react"
+import { redirect } from "next/navigation"
 
 interface Task {
   id: string
@@ -22,6 +23,14 @@ interface Task {
 
 export async function TaskList() {
   const supabase = createClient()
+
+  const {
+    data: { user }
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect("/sign-in")
+  }
 
   try {
     const { data: tasks, error } = await supabase
