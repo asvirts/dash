@@ -1,4 +1,4 @@
-import { EQUIPMENT, makeGym, now, type EquipmentId, type Gym } from "@reprelay/core";
+import { EQUIPMENT, makeGym, now, type EquipmentId, type Gym } from "@anygym/core";
 import { Image } from "expo-image";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useState } from "react";

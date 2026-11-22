@@ -30,7 +30,7 @@ export default function Account() {
         <Card>
           <Text style={s.mute}>Signed in as</Text>
           <Text style={[s.h2, { marginTop: 2 }]}>{email}</Text>
-          <Text style={[s.mute, { marginTop: 8 }]}>Routines, gyms and workouts sync with the RepRelay web app.</Text>
+          <Text style={[s.mute, { marginTop: 8 }]}>Routines, gyms and workouts sync with the Anygym web app.</Text>
         </Card>
         <Button title="Sign out" variant="danger" onPress={() => run("out")} loading={busy === "out"} />
       </Screen>

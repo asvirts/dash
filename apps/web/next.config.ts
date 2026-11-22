@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@reprelay/core"],
+  transpilePackages: ["@anygym/core"],
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

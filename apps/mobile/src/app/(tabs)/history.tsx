@@ -1,4 +1,4 @@
-import { sessionStats } from "@reprelay/core";
+import { sessionStats } from "@anygym/core";
 import { router } from "expo-router";
 import { Text, View } from "react-native";
 import { Card, Empty, Screen, Title, s } from "@/components/ui";

@@ -10,7 +10,7 @@ import {
   type Routine,
   type Session,
   type Store,
-} from "@reprelay/core";
+} from "@anygym/core";
 import type { User } from "@supabase/supabase-js";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { supabase } from "./supabase";
@@ -67,7 +67,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         setRoutines(r.sort((a, b) => a.name.localeCompare(b.name)));
         setGyms(g);
         setSessions(s.sort((a, b) => b.startedAt.localeCompare(a.startedAt)));
-        setCurrentGymIdState(localStorage.getItem("reprelay.currentGym"));
+        setCurrentGymIdState(localStorage.getItem("anygym.currentGym"));
       } catch (e) {
         console.error("Failed to load data", e);
       } finally {
@@ -104,7 +104,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   );
 
   const setCurrentGymId = useCallback((id: string) => {
-    localStorage.setItem("reprelay.currentGym", id);
+    localStorage.setItem("anygym.currentGym", id);
     setCurrentGymIdState(id);
   }, []);
 

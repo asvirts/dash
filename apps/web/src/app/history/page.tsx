@@ -1,6 +1,6 @@
 "use client";
 
-import { sessionStats } from "@reprelay/core";
+import { sessionStats } from "@anygym/core";
 import Link from "next/link";
 import { Card, Loading, PageTitle } from "@/components/ui";
 import { useData } from "@/lib/data";

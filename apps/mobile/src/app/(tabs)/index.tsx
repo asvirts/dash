@@ -1,4 +1,4 @@
-import { sessionStats, startSession } from "@reprelay/core";
+import { sessionStats, startSession } from "@anygym/core";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";

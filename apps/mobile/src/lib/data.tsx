@@ -9,13 +9,13 @@ import {
   type Routine,
   type Session,
   type Store,
-} from "@reprelay/core";
+} from "@anygym/core";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Alert } from "react-native";
 import { supabase } from "./supabase";
 
 const localStore = createLocalStore(AsyncStorage);
-const CURRENT_GYM_KEY = "reprelay.currentGymId";
+const CURRENT_GYM_KEY = "anygym.currentGymId";
 
 type Data = {
   ready: boolean;

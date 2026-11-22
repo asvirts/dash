@@ -1,4 +1,4 @@
-import type { EquipmentId } from "@reprelay/core";
+import type { EquipmentId } from "@anygym/core";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 import * as VideoThumbnails from "expo-video-thumbnails";

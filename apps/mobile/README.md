@@ -1,7 +1,7 @@
-# RepRelay: iOS app (Expo)
+# Anygym: iOS app (Expo)
 
 Everyday workout logger that adapts your routine to whatever gym you're in. It shares
-`@reprelay/core` (exercise library, adaptation engine, data model) with the web app.
+`@anygym/core` (exercise library, adaptation engine, data model) with the web app.
 
 ## Run on your iPhone (Expo Go)
 
@@ -20,7 +20,7 @@ computer must be on the same Wi-Fi (or run `npx expo start --tunnel` in `apps/mo
 | Var | What it does |
 | --- | --- |
 | `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY` | Enables sign-in and sync with the web app. Without them the app runs in **guest mode** (data stays on the device). |
-| `EXPO_PUBLIC_API_URL` | Base URL of the RepRelay web app. AI gym scans call `POST /api/detect` there. For local dev use your computer's LAN IP, e.g. `http://192.168.1.20:3000`. |
+| `EXPO_PUBLIC_API_URL` | Base URL of the Anygym web app. AI gym scans call `POST /api/detect` there. For local dev use your computer's LAN IP, e.g. `http://192.168.1.20:3000`. |
 
 Guest data is copied into the account automatically the first time you sign in.
 
@@ -43,7 +43,7 @@ npx eas-cli@latest submit --platform ios  # upload to App Store Connect / TestFl
 ```
 
 Set the `EXPO_PUBLIC_*` variables as EAS environment variables (or in `eas.json`) so the
-production build has them. Bundle id: `com.reprelay.app` (change it in `app.json` if needed).
+production build has them. Bundle id: `com.anygym.app` (change it in `app.json` if needed).
 
 ## Checks
 

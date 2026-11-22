@@ -9,7 +9,7 @@ import {
   type Session,
   type SessionEntry,
   type SetLog,
-} from "@reprelay/core";
+} from "@anygym/core";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";

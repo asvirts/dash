@@ -1,4 +1,4 @@
-import { equipmentLabel } from "@reprelay/core";
+import { equipmentLabel } from "@anygym/core";
 import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 import { Button, Card, Empty, Screen, Title, s } from "@/components/ui";
@@ -9,7 +9,7 @@ export default function Gyms() {
   const { gyms, currentGymId, setCurrentGymId } = useData();
   return (
     <Screen footer={<Button title="📷 Scan a gym" onPress={() => router.push("/gym/new?scan=1")} />}>
-      <Title sub="Snap a photo or video of any gym. RepRelay remembers what's there.">Gyms</Title>
+      <Title sub="Snap a photo or video of any gym. Anygym remembers what's there.">Gyms</Title>
       {gyms.map((g) => {
         const current = g.id === currentGymId;
         return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { type Gym } from "@reprelay/core";
+import { type Gym } from "@anygym/core";
 import { useState } from "react";
 import { GymEditor } from "@/components/GymEditor";
 import { Button, Card, LinkButton, Loading, PageTitle } from "@/components/ui";

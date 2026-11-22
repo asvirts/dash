@@ -1,6 +1,6 @@
 "use client";
 
-import { EQUIPMENT, type EquipmentId, type Gym } from "@reprelay/core";
+import { EQUIPMENT, type EquipmentId, type Gym } from "@anygym/core";
 import { Card, Input, SectionLabel } from "./ui";
 
 export type Detected = { id: EquipmentId; confidence: "high" | "medium" | "low"; evidence: string };

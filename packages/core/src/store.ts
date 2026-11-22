@@ -17,7 +17,7 @@ export interface Store {
 }
 
 /** Guest mode: data lives on this device only. */
-export function createLocalStore(kv: KV, prefix = "reprelay"): Store {
+export function createLocalStore(kv: KV, prefix = "anygym"): Store {
   const key = (k: Kind) => `${prefix}.${k}`;
   async function read<K extends Kind>(k: K): Promise<Collections[K][]> {
     try {

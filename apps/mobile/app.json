@@ -1,20 +1,20 @@
 {
   "expo": {
-    "name": "RepRelay",
-    "slug": "reprelay",
+    "name": "Anygym",
+    "slug": "anygym",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "reprelay",
+    "scheme": "anygym",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0a0c0a",
     "ios": {
-      "bundleIdentifier": "com.reprelay.app",
+      "bundleIdentifier": "com.anygym.app",
       "supportsTablet": false,
       "config": { "usesNonExemptEncryption": false }
     },
     "android": {
-      "package": "com.reprelay.app",
+      "package": "com.anygym.app",
       "adaptiveIcon": {
         "backgroundColor": "#0a0c0a",
         "foregroundImage": "./assets/images/android-icon-foreground.png"
@@ -37,9 +37,9 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "RepRelay uses your photos and videos of a gym to detect which equipment is available.",
-          "cameraPermission": "RepRelay uses the camera to scan a gym's equipment and adapt your workout.",
-          "microphonePermission": "RepRelay records video of a gym to detect its equipment. Audio isn't used."
+          "photosPermission": "Anygym uses your photos and videos of a gym to detect which equipment is available.",
+          "cameraPermission": "Anygym uses the camera to scan a gym's equipment and adapt your workout.",
+          "microphonePermission": "Anygym records video of a gym to detect its equipment. Audio isn't used."
         }
       ]
     ],

@@ -1,6 +1,6 @@
 "use client";
 
-import { EXERCISES, EXERCISE_BY_ID, makeRoutine, parseWorkout, type Routine } from "@reprelay/core";
+import { EXERCISES, EXERCISE_BY_ID, makeRoutine, parseWorkout, type Routine } from "@anygym/core";
 import { useEffect, useState } from "react";
 import { Button, Card, Input, Loading, PageTitle, SectionLabel } from "@/components/ui";
 import { useData } from "@/lib/data";

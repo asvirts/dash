@@ -1,4 +1,4 @@
--- RepRelay schema. Each table stores the app's JSON document in `data`
+-- Anygym schema. Each table stores the app's JSON document in `data`
 -- (shape defined in packages/core/src/types.ts) and is private to its owner.
 
 create table if not exists public.routines (

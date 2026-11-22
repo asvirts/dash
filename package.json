@@ -1,13 +1,13 @@
 {
-  "name": "reprelay",
+  "name": "anygym",
   "private": true,
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "web": "npm run dev -w @reprelay/web",
-    "mobile": "npm run start -w @reprelay/mobile",
-    "build:web": "npm run build -w @reprelay/web",
+    "web": "npm run dev -w @anygym/web",
+    "mobile": "npm run start -w @anygym/mobile",
+    "build:web": "npm run build -w @anygym/web",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "test": "npm run test -w @reprelay/core"
+    "test": "npm run test -w @anygym/core"
   },
   "engines": { "node": ">=20" }
 }

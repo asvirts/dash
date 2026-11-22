@@ -1,6 +1,6 @@
 "use client";
 
-import { sessionStats, startSession, type Routine } from "@reprelay/core";
+import { sessionStats, startSession, type Routine } from "@anygym/core";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Card, LinkButton, Loading, PageTitle, SectionLabel, timeAgo } from "@/components/ui";

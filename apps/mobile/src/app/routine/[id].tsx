@@ -1,4 +1,4 @@
-import { EXERCISE_BY_ID, EXERCISES, makeRoutine, now, parseWorkout, type Prescribed } from "@reprelay/core";
+import { EXERCISE_BY_ID, EXERCISES, makeRoutine, now, parseWorkout, type Prescribed } from "@anygym/core";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useMemo, useState } from "react";
 import { Alert, Pressable, Text, View } from "react-native";

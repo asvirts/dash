@@ -35,8 +35,8 @@ export function Shell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-20 -mx-4 border-b border-line bg-bg/90 px-4 py-3 backdrop-blur">
         <div className="flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
-            <span className="grid h-7 w-7 place-items-center rounded-md bg-lime text-sm font-black text-bg">R</span>
-            RepRelay
+            <span className="grid h-7 w-7 place-items-center rounded-md bg-lime text-sm font-black text-bg">A</span>
+            Anygym
           </Link>
           <Nav render={(active) => (<nav className="hidden gap-1 text-sm sm:flex">
             {NAV.map((n) => (

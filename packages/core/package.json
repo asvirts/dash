@@ -1,5 +1,5 @@
 {
-  "name": "@reprelay/core",
+  "name": "@anygym/core",
   "version": "0.1.0",
   "private": true,
   "main": "src/index.ts",

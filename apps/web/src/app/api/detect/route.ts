@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
-import { EQUIPMENT, EQUIPMENT_IDS, type EquipmentId } from "@reprelay/core";
+import { EQUIPMENT, EQUIPMENT_IDS, type EquipmentId } from "@anygym/core";
 import { createClient } from "@supabase/supabase-js";
 
 export const maxDuration = 60;

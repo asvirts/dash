@@ -11,7 +11,7 @@ import {
   type Session,
   type SessionEntry,
   type SetLog,
-} from "@reprelay/core";
+} from "@anygym/core";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Button, Card, Loading, MatchPill, timeAgo } from "@/components/ui";

@@ -1,6 +1,6 @@
 "use client";
 
-import { makeGym, type Gym } from "@reprelay/core";
+import { makeGym, type Gym } from "@anygym/core";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
