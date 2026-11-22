@@ -3,9 +3,9 @@
   "private": true,
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "web": "npm run dev -w @anygym/web",
+    "site": "npm run dev -w @anygym/web",
     "mobile": "npm run start -w @anygym/mobile",
-    "build:web": "npm run build -w @anygym/web",
+    "build:site": "npm run build -w @anygym/web",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test -w @anygym/core"
   },

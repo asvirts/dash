@@ -3,7 +3,7 @@
 A simple workout app for everyday exercise: bodyweight, dumbbells, cardio, stretching, or the gym. Log your routines as usual, with sets×reps or just time ("Walk 20 min"). When you're at a hotel, take a photo or a short video of the gym: AI detects the equipment, and your routine is adapted automatically. Each swap keeps the movement pattern and shows a match %. Reps and tempo are scaled when the dumbbells run light.
 
 ```
-apps/web       Next.js web app + /api/detect (Claude vision equipment detection)
+apps/web       Next.js marketing site (/, /privacy) + /api/detect, the AI equipment scan the app calls
 apps/mobile    Expo (React Native) iOS app
 packages/core  Shared TypeScript: exercise library, adaptation engine, workout parser, data types, storage
 supabase/      Database schema (row-level security, one row per routine / gym / session)
@@ -14,12 +14,12 @@ supabase/      Database schema (row-level security, one row per routine / gym / 
 ```bash
 npm install
 cp apps/web/.env.example apps/web/.env.local       # add ANTHROPIC_API_KEY
-npm run web                                         # http://localhost:3000
+npm run site                                        # marketing site + scan API, http://localhost:3000
 npm run mobile                                      # Expo dev server, scan QR with Expo Go
 npm test                                            # core engine tests
 ```
 
-Without Supabase env vars, both apps run in **guest mode**: data stays on the device, and AI scanning is open (dev only).
+Without Supabase env vars, the app runs in **guest mode**: data stays on the device, and AI scanning is open (dev only).
 
 ## Set up accounts and sync (Supabase)
 
@@ -30,9 +30,11 @@ Without Supabase env vars, both apps run in **guest mode**: data stays on the de
    - `apps/mobile/.env` as `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY`
 4. Once Supabase is configured, `/api/detect` requires a signed-in user, so anonymous visitors can't run up your AI bill.
 
-## Deploy the web app (Vercel)
+## Deploy the site (Vercel)
 
 Import the repo and set **Root Directory** to `apps/web`. Add the env vars above. Then point the mobile app's `EXPO_PUBLIC_API_URL` at the deployed URL.
+
+Before launch, set `APP_STORE_URL` and `CONTACT_EMAIL` in `apps/web/src/app/site.ts`. The privacy page at `/privacy` is the URL to give App Store Connect.
 
 ## How adaptation works
 
