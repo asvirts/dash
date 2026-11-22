@@ -6,7 +6,7 @@ export default function TabsLayout() {
     <NativeTabs tintColor={C.lime} iconColor={C.mute} backgroundColor={C.bg} labelStyle={{ color: C.mute }}>
       <NativeTabs.Trigger name="index">
         <NativeTabs.Trigger.Label>Today</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf="figure.strengthtraining.traditional" />
+        <NativeTabs.Trigger.Icon sf="figure.mixed.cardio" />
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="routines">
         <NativeTabs.Trigger.Label>Routines</NativeTabs.Trigger.Label>

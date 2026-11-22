@@ -76,10 +76,10 @@ export function makeGym(partial: Partial<Gym> & Pick<Gym, "name">): Gym {
   };
 }
 
-/** First run: starter routines + a fully equipped home gym. */
+/** First run: starter routines + a fully equipped regular gym. */
 export async function seedIfEmpty(store: Store) {
   const [routines, gyms] = await Promise.all([store.list("routines"), store.list("gyms")]);
   if (!routines.length) for (const t of TEMPLATES) await store.upsert("routines", makeRoutine(t.name, t.text));
   if (!gyms.length)
-    await store.upsert("gyms", makeGym({ name: "Home gym", kind: "home", items: [...EQUIPMENT_IDS], maxDumbbellLbs: 100 }));
+    await store.upsert("gyms", makeGym({ name: "My gym", kind: "home", items: [...EQUIPMENT_IDS], maxDumbbellLbs: 100 }));
 }

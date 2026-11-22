@@ -1,4 +1,4 @@
-import { EXERCISE_BY_ID, EXERCISES, makeRoutine, now, parseWorkout, type Prescribed } from "@anygym/core";
+import { EXERCISE_BY_ID, EXERCISES, formatTarget, makeRoutine, now, parseWorkout, type Prescribed } from "@anygym/core";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useMemo, useState } from "react";
 import { Alert, Pressable, Text, View } from "react-native";
@@ -71,7 +71,7 @@ export default function RoutineEditor() {
         }}
       />
       <Label>Name</Label>
-      <Input value={name} onChangeText={setName} placeholder="e.g. Lower Strength" />
+      <Input value={name} onChangeText={setName} placeholder="e.g. Morning workout" />
 
       <Label>Exercises, one per line</Label>
       <Input
@@ -80,10 +80,10 @@ export default function RoutineEditor() {
         multiline
         autoCapitalize="sentences"
         autoCorrect={false}
-        placeholder={"Back squat 4x6 @ 225\nRDL 3x8 @ 185\nPull-ups 4x8"}
+        placeholder={"Squats 3x12\nPush-ups 3x10\nPlank 3x30s\nWalk 20 min"}
         style={{ minHeight: 150, textAlignVertical: "top", fontFamily: "Menlo", fontSize: 14, lineHeight: 22 }}
       />
-      <Text style={s.mute}>Format: name, sets×reps, optional load (@ 225 or 100kg).</Text>
+      <Text style={s.mute}>Format: name, then sets×reps (3x10) or a time (20 min). Weight is optional (@ 25 or 10kg).</Text>
 
       <Label>Recognized · {exercises.length}</Label>
       {exercises.map((p) => {
@@ -101,7 +101,7 @@ export default function RoutineEditor() {
                 )}
               </View>
               <Text style={[s.mono, { color: C.mute }]}>
-                {p.sets}×{p.reps}
+                {formatTarget(p.sets, p.reps)}
                 {p.loadLbs ? ` @${p.loadLbs}` : ""}
               </Text>
             </Pressable>

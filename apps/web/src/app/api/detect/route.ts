@@ -18,7 +18,7 @@ const Detection = z.object({
   summary: z.string(),
 });
 
-const SYSTEM = `You identify strength-training equipment in photos or video frames of hotel and apartment gyms.
+const SYSTEM = `You identify fitness equipment (weights, machines and cardio equipment) in photos or video frames of gyms, including hotel and apartment gyms.
 
 Equipment ids you may return:
 ${EQUIPMENT.map((e) => `- ${e.id}: ${e.label}`).join("\n")}
@@ -26,6 +26,8 @@ ${EQUIPMENT.map((e) => `- ${e.id}: ${e.label}`).join("\n")}
 Rules:
 - Only list equipment you can actually see. Do not guess based on what gyms usually have.
 - Multi-function cable towers with a lat bar count as cable_machine AND lat_pulldown. A functional trainer is cable_machine.
+- "rower" is a cardio rowing machine (ergometer). "row_machine" is a seated strength row machine with a weight stack.
+- Upright, recumbent and spin bikes all count as exercise_bike.
 - An adjustable bench that also lies flat is "bench". Only use flat_bench for benches that don't adjust.
 - For max_dumbbell_lbs, read the heaviest dumbbell's number or estimate from the rack. Convert kg to lb. Use null if there are no dumbbells or you can't tell.
 - evidence: a few words on where you saw it ("rack on left wall, 5–50 lb").

@@ -1,7 +1,7 @@
 import type { Prescribed } from "./adapt";
 import type { EquipmentId } from "./equipment";
 
-/** A workout the user does regularly (e.g. "Lower Strength"). */
+/** A workout the user does regularly (e.g. "Full Body"). */
 export type Routine = {
   id: string;
   name: string;

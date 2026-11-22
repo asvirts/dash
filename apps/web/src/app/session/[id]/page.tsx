@@ -3,10 +3,12 @@
 import {
   EXERCISE_BY_ID,
   formatSets,
+  formatTarget,
   isSwapped,
   lastPerformance,
   now,
   repick,
+  repsKind,
   sessionStats,
   type Session,
   type SessionEntry,
@@ -82,7 +84,7 @@ export default function SessionPage() {
           <Stat value={`${stats.avgMatch}%`} label="avg match" accent />
           <Stat value={stats.sets} label="sets" />
           <div className={`col-span-3 rounded-lg py-1.5 text-xs font-semibold ${stats.intact ? "bg-lime/10 text-lime" : "bg-amber/10 text-amber"}`}>
-            {stats.intact ? "✓ Training intent preserved" : "⚠ Some movements only have partial matches here"}
+            {stats.intact ? "✓ Same workout, adapted to this gym" : "⚠ Some exercises only have rough matches here"}
           </div>
         </Card>
       )}
@@ -138,6 +140,11 @@ function EntryCard({
 }) {
   const [open, setOpen] = useState(false);
   const swapped = isSwapped(e);
+  // Timed/distance blocks just get checked off; weight only shows for exercises that use equipment.
+  const showReps = repsKind(e.targetReps) === "reps";
+  const ex = e.exerciseId ? EXERCISE_BY_ID[e.exerciseId] : null;
+  const showWeight = showReps && (!!ex?.requires.length || e.sets.some((st) => st.weight != null));
+  const cols = showWeight ? "grid-cols-[2rem_1fr_1fr_3rem]" : "grid-cols-[2rem_1fr_3rem]";
   return (
     <Card className="p-0">
       <button className="flex w-full items-start gap-3 p-4 text-left" onClick={() => setOpen(!open)} disabled={e.options.length < 2}>
@@ -146,7 +153,7 @@ function EntryCard({
           {swapped && <div className="truncate text-xs text-mute line-through">{e.original.rawName}</div>}
           <div className="font-semibold">{e.exerciseName}</div>
           <div className="font-mono text-sm text-ink/80">
-            {e.sets.length} × {e.targetReps}
+            {formatTarget(e.sets.length, e.targetReps)}
             {e.loadHint && <span className="text-mute"> · {e.loadHint}</span>}
           </div>
           {last && (
@@ -154,7 +161,7 @@ function EntryCard({
               Last ({timeAgo(last.date)}): {formatSets(last.sets)}
             </div>
           )}
-          {!e.exerciseId && <div className="mt-1 text-sm text-rose">Nothing here trains this movement. Skip it or add sets elsewhere.</div>}
+          {!e.exerciseId && <div className="mt-1 text-sm text-rose">Nothing here works for this one. Skip it today.</div>}
         </div>
         <div className="flex flex-col items-end gap-1">
           {e.match != null && e.match < 100 && <MatchPill match={e.match} />}
@@ -193,17 +200,23 @@ function EntryCard({
 
       {e.exerciseId && (
         <div className="border-t border-line px-4 py-2">
-          <div className="grid grid-cols-[2rem_1fr_1fr_3rem] items-center gap-2 pb-1 text-[11px] uppercase tracking-widest text-mute">
+          <div className={`grid ${cols} items-center gap-2 pb-1 text-[11px] uppercase tracking-widest text-mute`}>
             <span>Set</span>
-            <span>lb</span>
-            <span>Reps</span>
+            {showWeight && <span>lb</span>}
+            <span>{showReps ? "Reps" : "Target"}</span>
             <span />
           </div>
           {e.sets.map((st, j) => (
-            <div key={j} className={`grid grid-cols-[2rem_1fr_1fr_3rem] items-center gap-2 py-1 ${st.done ? "opacity-70" : ""}`}>
+            <div key={j} className={`grid ${cols} items-center gap-2 py-1 ${st.done ? "opacity-70" : ""}`}>
               <span className="font-mono text-sm text-mute">{j + 1}</span>
-              <NumInput value={st.weight} placeholder={last?.sets[j]?.weight?.toString() ?? "—"} onChange={(v) => onSet(j, { weight: v })} />
-              <NumInput value={st.reps} placeholder={e.targetReps} onChange={(v) => onSet(j, { reps: v })} />
+              {showWeight && (
+                <NumInput value={st.weight} placeholder={last?.sets[j]?.weight?.toString() ?? "—"} onChange={(v) => onSet(j, { weight: v })} />
+              )}
+              {showReps ? (
+                <NumInput value={st.reps} placeholder={e.targetReps} onChange={(v) => onSet(j, { reps: v })} />
+              ) : (
+                <span className="font-mono text-sm">{e.targetReps}</span>
+              )}
               <button
                 onClick={() => onSet(j, { done: !st.done })}
                 aria-label={st.done ? "Mark set not done" : "Mark set done"}

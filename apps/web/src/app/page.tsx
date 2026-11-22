@@ -23,7 +23,7 @@ export default function Today() {
   return (
     <>
       <PageTitle sub={new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}>
-        Let’s train
+        Let’s move
       </PageTitle>
 
       {active && (

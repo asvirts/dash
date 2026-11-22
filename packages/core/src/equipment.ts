@@ -20,6 +20,11 @@ export const EQUIPMENT = [
   { id: "shoulder_press", label: "Shoulder press machine", icon: "⬆️" },
   { id: "medicine_ball", label: "Medicine ball", icon: "⚽" },
   { id: "step_box", label: "Plyo box / step", icon: "📦" },
+  { id: "treadmill", label: "Treadmill", icon: "🏃" },
+  { id: "exercise_bike", label: "Exercise bike", icon: "🚴" },
+  { id: "elliptical", label: "Elliptical", icon: "〰️" },
+  { id: "rower", label: "Rowing machine (cardio)", icon: "🚣" },
+  { id: "jump_rope", label: "Jump rope", icon: "🪢" },
 ] as const;
 
 export type EquipmentId = (typeof EQUIPMENT)[number]["id"];

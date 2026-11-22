@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { EXERCISE_BY_ID, findExercise } from "./exercises";
-import { parseWorkout } from "./workout";
+import { formatTarget, parseWorkout, TEMPLATES } from "./workout";
 import { makeGym, makeRoutine } from "./store";
 import { lastPerformance, repick, sessionStats, startSession } from "./session";
 import { EQUIPMENT_IDS } from "./equipment";
@@ -53,4 +53,36 @@ test("repick and last performance", () => {
 test("light dumbbells still beat bodyweight", () => {
   const s = startSession(makeRoutine("Legs", "Back squat 4x5 @ 245"), makeGym({ name: "Hotel", items: ["dumbbells", "bench"], maxDumbbellLbs: 50 }));
   assert.ok(EXERCISE_BY_ID[s.entries[0].exerciseId!].requires.includes("dumbbells"), s.entries[0].exerciseName);
+});
+
+test("parses everyday workouts: bodyweight, time and distance", () => {
+  const w = parseWorkout("Squats 3x12\nPush-ups 3 sets of 10\nPlank 3x30s\nWalk 20 min\nRun 5k\nBike 2 miles\nJumping jacks 1 min\nBicycle crunches 3x20\nGlute bridges 3x15");
+  assert.deepEqual(
+    w.map((p) => [p.exerciseId, p.sets, p.reps]),
+    [
+      ["bw_tempo_squat", 3, "12"],
+      ["pushup", 3, "10"],
+      ["plank", 3, "30s"],
+      ["brisk_walk", 1, "20 min"],
+      ["outdoor_run", 1, "5 km"],
+      ["bike", 1, "2 mi"],
+      ["jumping_jacks", 1, "1 min"],
+      ["bicycle_crunch", 3, "20"],
+      ["glute_bridge", 3, "15"],
+    ],
+  );
+  assert.equal(formatTarget(1, "20 min"), "20 min");
+  assert.equal(formatTarget(3, "30s"), "3×30s");
+});
+
+test("starter routines are fully recognized", () => {
+  for (const t of TEMPLATES) for (const p of parseWorkout(t.text)) assert.ok(p.exerciseId, `${t.name}: ${p.rawName}`);
+});
+
+test("cardio swaps to whatever machine the gym has", () => {
+  const s = startSession(makeRoutine("Cardio", "Treadmill 20 min"), makeGym({ name: "Hotel", items: ["exercise_bike"], maxDumbbellLbs: null }));
+  const [e] = s.entries;
+  assert.equal(e.exerciseId, "bike");
+  assert.equal(e.targetReps, "20 min");
+  assert.equal(e.sets[0].reps, null);
 });

@@ -1,6 +1,6 @@
 # Anygym
 
-Your everyday workout app that also handles travel. Log your routines at home as usual. When you're at a hotel, take a photo or a short video of the gym: AI detects the equipment, and your routine is adapted automatically. Each swap keeps the movement pattern and shows a match %. Reps and tempo are scaled when the dumbbells run light.
+A simple workout app for everyday exercise: bodyweight, dumbbells, cardio, stretching, or the gym. Log your routines as usual, with sets×reps or just time ("Walk 20 min"). When you're at a hotel, take a photo or a short video of the gym: AI detects the equipment, and your routine is adapted automatically. Each swap keeps the movement pattern and shows a match %. Reps and tempo are scaled when the dumbbells run light.
 
 ```
 apps/web       Next.js web app + /api/detect (Claude vision equipment detection)

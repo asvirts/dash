@@ -16,7 +16,7 @@ export default function HistoryPage() {
 
   return (
     <>
-      <PageTitle sub={`${done.length} workouts logged · ${away} on the road`}>History</PageTitle>
+      <PageTitle sub={`${done.length} workouts logged · ${away} adapted to a different gym`}>History</PageTitle>
 
       <Card className="mb-5 grid grid-cols-2 gap-2 text-center">
         <div>
@@ -25,9 +25,9 @@ export default function HistoryPage() {
         </div>
         <div>
           <div className="text-2xl font-semibold">
-            {Math.round(thisWeek.reduce((n, s) => n + sessionStats(s).volume, 0)).toLocaleString()}
+            {thisWeek.reduce((n, s) => n + sessionStats(s).minutes, 0).toLocaleString()}
           </div>
-          <div className="text-[11px] uppercase tracking-widest text-mute">lb volume this week</div>
+          <div className="text-[11px] uppercase tracking-widest text-mute">active minutes this week</div>
         </div>
       </Card>
 
@@ -45,7 +45,7 @@ export default function HistoryPage() {
                 <div className="min-w-0 flex-1">
                   <div className="font-semibold">{s.routineName}</div>
                   <div className="truncate text-xs text-mute">
-                    {s.gymName} · {st.done}/{st.sets} sets · {Math.round(st.volume).toLocaleString()} lb
+                    {s.gymName} · {st.done}/{st.sets} sets · {st.minutes} min
                   </div>
                 </div>
                 {st.swaps > 0 && <span className="rounded-full bg-amber/10 px-2 py-0.5 text-[11px] text-amber">✈️ {st.swaps} swaps</span>}

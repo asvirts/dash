@@ -1,6 +1,7 @@
 import { adaptWorkout, prescribe, type Adapted } from "./adapt";
 import type { GymInventory } from "./equipment";
 import { EXERCISE_BY_ID } from "./exercises";
+import { repsKind } from "./workout";
 import type { Gym, Routine, Session, SessionEntry, SetLog } from "./types";
 import { uuid } from "./uuid";
 
@@ -13,7 +14,7 @@ function toInventory(gym: Gym | null): GymInventory {
 function entryFromAdapted(a: Adapted, inv: GymInventory, prevSets?: SetLog[]): SessionEntry {
   const opt = a.options[a.pick];
   const rx = prescribe(a, inv);
-  const repsNum = parseInt(rx.reps, 10);
+  const repsNum = repsKind(rx.reps) === "reps" ? parseInt(rx.reps, 10) : NaN;
   const sets: SetLog[] = Array.from({ length: rx.sets }, (_, i) => ({
     reps: prevSets?.[i]?.reps ?? (Number.isFinite(repsNum) ? repsNum : null),
     weight: prevSets?.[i]?.weight ?? null,
@@ -83,7 +84,11 @@ export function sessionStats(s: Session) {
   const avgMatch = scored.length ? Math.round(scored.reduce((n, e) => n + (e.match ?? 0), 0) / scored.length) : 0;
   const swaps = s.entries.filter(isSwapped).length;
   const intact = scored.length === s.entries.length && scored.every((e) => (e.match ?? 0) >= 70);
-  return { sets, done, volume, avgMatch, swaps, intact };
+  // Wall-clock time, capped so a workout left open overnight doesn't count as hours.
+  const minutes = s.finishedAt
+    ? Math.min(180, Math.max(1, Math.round((Date.parse(s.finishedAt) - Date.parse(s.startedAt)) / 60000)))
+    : 0;
+  return { sets, done, volume, avgMatch, swaps, intact, minutes };
 }
 
 /** Most recent completed sets for an exercise, for "last time" hints. */
@@ -99,5 +104,6 @@ export function lastPerformance(sessions: Session[], exerciseId: string, exclude
 }
 
 export function formatSets(sets: SetLog[]) {
-  return sets.map((s) => `${s.weight ?? "BW"}×${s.reps ?? "?"}`).join(", ");
+  if (sets.every((s) => s.weight == null && s.reps == null)) return `${sets.length} done`;
+  return sets.map((s) => (s.weight != null ? `${s.weight}×${s.reps ?? "?"}` : `${s.reps ?? "✓"}`)).join(", ");
 }

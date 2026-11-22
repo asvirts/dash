@@ -1,10 +1,12 @@
 import {
   EXERCISE_BY_ID,
   formatSets,
+  formatTarget,
   isSwapped,
   lastPerformance,
   now,
   repick,
+  repsKind,
   sessionStats,
   type Session,
   type SessionEntry,
@@ -110,14 +112,17 @@ export default function SessionScreen() {
       {st.swaps > 0 && (
         <Notice tone={st.intact ? "lime" : "amber"}>
           {st.intact
-            ? "✓ Training intent preserved. Each swap trains the same movement pattern."
-            : "⚠ Some movements only have partial matches at this gym."}
+            ? "✓ Same workout, adapted to this gym. Each swap works the same muscles."
+            : "⚠ Some exercises only have rough matches at this gym."}
         </Notice>
       )}
       {finished && <Notice>Finished {new Date(session.finishedAt!).toLocaleString()}</Notice>}
 
       {session.entries.map((e, i) => {
         const last = e.exerciseId ? lastPerformance(sessions, e.exerciseId, session.id) : null;
+        const showReps = repsKind(e.targetReps) === "reps";
+        const showWeight =
+          showReps && (!!(e.exerciseId && EXERCISE_BY_ID[e.exerciseId]?.requires.length) || e.sets.some((x) => x.weight != null));
         const swapping = openSwap === e.uid;
         return (
           <Card key={e.uid} style={{ gap: 8 }}>
@@ -133,7 +138,7 @@ export default function SessionScreen() {
                 )}
                 <Text style={s.h2}>{e.exerciseName}</Text>
                 <Text style={[s.mono, { color: C.mute, marginTop: 2 }]}>
-                  {e.sets.length} × {e.targetReps}
+                  {formatTarget(e.sets.length, e.targetReps)}
                   {e.loadHint ? ` · ${e.loadHint}` : ""}
                 </Text>
               </View>
@@ -147,7 +152,7 @@ export default function SessionScreen() {
 
             {e.match == null && (
               <Text style={{ color: C.rose, fontSize: 14 }}>
-                {e.original.exerciseId ? "Nothing here trains this pattern. Skip it or add sets elsewhere." : "Exercise not recognized. Edit the routine to fix it."}
+                {e.original.exerciseId ? "Nothing here works for this one. Skip it today." : "Exercise not recognized. Edit the routine to fix it."}
               </Text>
             )}
             {e.cues.map((c) => (
@@ -188,6 +193,8 @@ export default function SessionScreen() {
                 n={j + 1}
                 set={set}
                 hint={last?.sets[j] ?? last?.sets[last.sets.length - 1]}
+                target={showReps ? null : e.targetReps}
+                showWeight={showWeight}
                 onChange={(patch) => updateSet(e.uid, j, patch)}
               />
             ))}
@@ -203,7 +210,22 @@ function num(t: string) {
   return Number.isFinite(v) ? v : null;
 }
 
-function SetRow({ n, set, hint, onChange }: { n: number; set: SetLog; hint?: SetLog; onChange: (p: Partial<SetLog>) => void }) {
+function SetRow({
+  n,
+  set,
+  hint,
+  target,
+  showWeight,
+  onChange,
+}: {
+  n: number;
+  set: SetLog;
+  hint?: SetLog;
+  /** For timed/distance blocks: shown instead of inputs. */
+  target: string | null;
+  showWeight: boolean;
+  onChange: (p: Partial<SetLog>) => void;
+}) {
   const box = {
     flex: 1,
     minWidth: 0,
@@ -218,25 +240,35 @@ function SetRow({ n, set, hint, onChange }: { n: number; set: SetLog; hint?: Set
   return (
     <View style={[s.row, { opacity: set.done ? 0.65 : 1 }]}>
       <Text style={[s.mono, { width: 22, color: C.mute }]}>{n}</Text>
-      <TextInput
-        style={box}
-        keyboardType="decimal-pad"
-        placeholder={hint?.weight != null ? `${hint.weight}` : "lb"}
-        placeholderTextColor={C.mute}
-        value={set.weight != null ? String(set.weight) : ""}
-        onChangeText={(t) => onChange({ weight: num(t) })}
-        selectTextOnFocus
-      />
-      <Text style={s.mute}>×</Text>
-      <TextInput
-        style={box}
-        keyboardType="number-pad"
-        placeholder="reps"
-        placeholderTextColor={C.mute}
-        value={set.reps != null ? String(set.reps) : ""}
-        onChangeText={(t) => onChange({ reps: num(t) })}
-        selectTextOnFocus
-      />
+      {target ? (
+        <Text style={[s.mono, { flex: 1, fontSize: 16 }]}>{target}</Text>
+      ) : (
+        <>
+          {showWeight && (
+            <>
+              <TextInput
+                style={box}
+                keyboardType="decimal-pad"
+                placeholder={hint?.weight != null ? `${hint.weight}` : "lb"}
+                placeholderTextColor={C.mute}
+                value={set.weight != null ? String(set.weight) : ""}
+                onChangeText={(t) => onChange({ weight: num(t) })}
+                selectTextOnFocus
+              />
+              <Text style={s.mute}>×</Text>
+            </>
+          )}
+          <TextInput
+            style={box}
+            keyboardType="number-pad"
+            placeholder="reps"
+            placeholderTextColor={C.mute}
+            value={set.reps != null ? String(set.reps) : ""}
+            onChangeText={(t) => onChange({ reps: num(t) })}
+            selectTextOnFocus
+          />
+        </>
+      )}
       <Pressable
         onPress={() =>
           onChange({ done: !set.done, weight: set.weight ?? (!set.done ? (hint?.weight ?? null) : null) })

@@ -1,6 +1,6 @@
 "use client";
 
-import { EXERCISES, EXERCISE_BY_ID, makeRoutine, parseWorkout, type Routine } from "@anygym/core";
+import { EXERCISES, EXERCISE_BY_ID, formatTarget, makeRoutine, parseWorkout, type Routine } from "@anygym/core";
 import { useEffect, useState } from "react";
 import { Button, Card, Input, Loading, PageTitle, SectionLabel } from "@/components/ui";
 import { useData } from "@/lib/data";
@@ -37,7 +37,7 @@ export default function RoutinesPage() {
   return (
     <>
       <PageTitle
-        sub="The workouts you do every week. They get adapted automatically when you train at a different gym."
+        sub="The workouts you do regularly. When you’re somewhere new, they adjust to whatever equipment is there."
         action={<Button onClick={() => setEditing(makeRoutine("New routine", ""))}>+ New</Button>}
       >
         Routines
@@ -50,7 +50,7 @@ export default function RoutinesPage() {
               <div className="mt-1 space-y-0.5 font-mono text-xs text-mute">
                 {r.exercises.map((e) => (
                   <div key={e.uid}>
-                    {e.rawName} {e.sets}×{e.reps}
+                    {e.rawName} {formatTarget(e.sets, e.reps)}
                     {e.loadLbs ? ` @ ${e.loadLbs}` : ""}
                   </div>
                 ))}
@@ -91,7 +91,7 @@ function RoutineEditor({
 
   return (
     <>
-      <PageTitle sub="One exercise per line, like “Back squat 4x6 @ 225” or “Pull-ups 3x8”.">
+      <PageTitle sub="One exercise per line, like “Squats 3x12”, “Plank 3x30s” or “Walk 20 min”.">
         {isNew ? "New routine" : "Edit routine"}
       </PageTitle>
       <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Routine name" className="mb-3 w-full text-lg font-semibold" />
@@ -101,13 +101,13 @@ function RoutineEditor({
         rows={7}
         autoFocus={isNew}
         spellCheck={false}
-        placeholder={"Back squat 4x6 @ 225\nRDL 3x8 @ 185\nPull-ups 4x8"}
+        placeholder={"Squats 3x12\nPush-ups 3x10\nPlank 3x30s\nWalk 20 min"}
         className="w-full resize-y rounded-2xl border border-line bg-panel p-4 font-mono text-sm leading-relaxed outline-none focus:border-lime/60"
       />
 
       <SectionLabel>Recognized · {exercises.length}</SectionLabel>
       <Card className="divide-y divide-line p-0">
-        {!exercises.length && <p className="p-4 text-sm text-mute">Each line needs sets×reps, e.g. 3x10.</p>}
+        {!exercises.length && <p className="p-4 text-sm text-mute">Each line needs sets×reps (3x10) or a time (20 min).</p>}
         {exercises.map((p, i) => (
           <div key={p.uid} className="flex items-center gap-3 px-4 py-3">
             <span className="w-5 font-mono text-xs text-mute">{i + 1}</span>
@@ -129,13 +129,13 @@ function RoutineEditor({
               )}
             </div>
             <span className="whitespace-nowrap font-mono text-xs text-mute">
-              {p.sets}×{p.reps}
+              {formatTarget(p.sets, p.reps)}
               {p.loadLbs ? ` @${p.loadLbs}` : ""}
             </span>
           </div>
         ))}
       </Card>
-      {unknown > 0 && <p className="mt-2 text-xs text-amber">{unknown} not recognized. Pick the closest match so it can be adapted when you travel.</p>}
+      {unknown > 0 && <p className="mt-2 text-xs text-amber">{unknown} not recognized. Pick the closest match so it can be adapted at other gyms.</p>}
 
       <div className="mt-6 flex gap-3">
         {!isNew && (

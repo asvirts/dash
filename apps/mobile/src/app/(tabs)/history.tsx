@@ -14,7 +14,7 @@ export default function History() {
   const travel = done.filter((x) => sessionStats(x).swaps > 0).length;
   return (
     <Screen>
-      <Title sub={done.length ? `${done.length} workouts · ${travel} adapted on the road` : undefined}>History</Title>
+      <Title sub={done.length ? `${done.length} workouts · ${travel} adapted to a different gym` : undefined}>History</Title>
       {done.map((x) => {
         const st = sessionStats(x);
         return (
@@ -25,7 +25,7 @@ export default function History() {
             </View>
             <Text style={[s.mute, { marginTop: 4 }]}>
               {x.gymName} · {st.done}/{st.sets} sets
-              {st.volume ? ` · ${st.volume.toLocaleString()} lb volume` : ""}
+              {st.minutes ? ` · ${st.minutes} min` : ""}
             </Text>
             {st.swaps > 0 && (
               <Text style={{ color: C.amber, fontSize: 13, marginTop: 4 }}>

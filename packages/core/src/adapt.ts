@@ -6,7 +6,7 @@ export type Prescribed = {
   rawName: string;
   exerciseId: string | null;
   sets: number;
-  reps: string; // "5", "8-10", "30s"
+  reps: string; // "5", "8-10", "30s", "20 min", "2 mi"
   loadLbs: number | null;
   rpe?: string;
 };
@@ -129,7 +129,7 @@ export function prescribe(a: Adapted, inv: GymInventory): Prescription {
     if (max && need > max) {
       loadHint = `${max} lb (heaviest DB)`;
       levelDrop = Math.max(levelDrop, need / max > 1.5 ? 2 : 1);
-      cues.push(`Heaviest DB is ${max} lb vs ~${need} lb needed. Use a 3–4s lowering phase to make up for it.`);
+      cues.push(`Heaviest dumbbell here is ${max} lb (you'd normally use ~${need} lb). Lower it slowly, over 3–4 seconds, to make up for it.`);
     } else {
       loadHint = `~${need} lb ${ex.requires.includes("kettlebell") ? "KB" : "DBs"}`;
     }
@@ -141,11 +141,12 @@ export function prescribe(a: Adapted, inv: GymInventory): Prescription {
     const mult = levelDrop === 1 ? 1.5 : 2.2;
     lo = Math.min(25, Math.round(lo * mult));
     hi = Math.min(30, Math.round(hi * mult));
-    cues.push("Lighter load, so add reps. Finish each set 1–2 reps short of failure (RPE 8–9).");
-    if (ex.load === 1) cues.push("Tempo 3-1-1 with a 1s pause at the bottom.");
+    cues.push("Lighter weight, so do more reps. Stop each set when you have 1–2 good reps left.");
+    if (ex.load === 1) cues.push("Go slow: 3 seconds down, short pause at the bottom.");
   }
   if (ex.unilateral && !orig.unilateral) cues.push("Reps are per side.");
-  if (ex.pattern !== orig.pattern) cues.push(`Closest option here trains a related pattern (${ex.name}).`);
+  if (ex.pattern === "cardio" && orig.pattern === "cardio") cues.push("Same time, similar effort: you can talk, but not sing.");
+  else if (ex.pattern !== orig.pattern) cues.push(`Nothing here matches exactly. ${ex.name} works similar muscles.`);
 
   return {
     sets: p.sets,

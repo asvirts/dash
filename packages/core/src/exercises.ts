@@ -15,7 +15,9 @@ export type Pattern =
   | "delts"
   | "core"
   | "calves"
-  | "carry";
+  | "carry"
+  | "cardio"
+  | "mobility";
 
 export type Muscle =
   | "quads"
@@ -35,7 +37,8 @@ export type Muscle =
   | "abs"
   | "obliques"
   | "calves"
-  | "traps";
+  | "traps"
+  | "heart";
 
 export type Exercise = {
   id: string;
@@ -44,7 +47,7 @@ export type Exercise = {
   muscles: Muscle[];
   /** All of these must be present. Empty = bodyweight. */
   requires: EquipmentId[];
-  /** 3 = heavy/axial (barbell, smith, leg press), 2 = moderate, 1 = light. */
+  /** 3 = heavy/axial (barbell, smith, leg press), 2 = moderate, 1 = light. For cardio: intensity. */
   load: 1 | 2 | 3;
   unilateral?: boolean;
   /** Load is capped by the heaviest dumbbell / kettlebell on hand. */
@@ -56,14 +59,14 @@ const E = (e: Exercise) => e;
 
 export const EXERCISES: Exercise[] = [
   // ── Squat ──
-  E({ id: "bb_back_squat", name: "Barbell Back Squat", pattern: "squat", muscles: ["quads", "glutes", "adductors"], requires: ["barbell", "squat_rack"], load: 3, aliases: ["back squat", "squat", "bb squat", "high bar squat", "low bar squat"] }),
+  E({ id: "bb_back_squat", name: "Barbell Back Squat", pattern: "squat", muscles: ["quads", "glutes", "adductors"], requires: ["barbell", "squat_rack"], load: 3, aliases: ["back squat", "bb squat", "high bar squat", "low bar squat"] }),
   E({ id: "bb_front_squat", name: "Barbell Front Squat", pattern: "squat", muscles: ["quads", "glutes"], requires: ["barbell", "squat_rack"], load: 3, aliases: ["front squat"] }),
   E({ id: "smith_squat", name: "Smith Machine Squat", pattern: "squat", muscles: ["quads", "glutes", "adductors"], requires: ["smith_machine"], load: 3, aliases: ["smith squat"] }),
   E({ id: "leg_press", name: "Leg Press", pattern: "squat", muscles: ["quads", "glutes", "adductors"], requires: ["leg_press"], load: 3 }),
   E({ id: "db_goblet_squat", name: "Goblet Squat (DB)", pattern: "squat", muscles: ["quads", "glutes"], requires: ["dumbbells"], load: 2, dbLimited: true, aliases: ["goblet squat"] }),
   E({ id: "kb_goblet_squat", name: "Goblet Squat (KB)", pattern: "squat", muscles: ["quads", "glutes"], requires: ["kettlebell"], load: 2, dbLimited: true }),
   E({ id: "heel_elev_db_squat", name: "Heels-Elevated DB Squat", pattern: "squat", muscles: ["quads", "glutes"], requires: ["dumbbells"], load: 2, dbLimited: true }),
-  E({ id: "bw_tempo_squat", name: "Tempo Bodyweight Squat", pattern: "squat", muscles: ["quads", "glutes"], requires: [], load: 1, aliases: ["air squat", "bodyweight squat"] }),
+  E({ id: "bw_tempo_squat", name: "Bodyweight Squat", pattern: "squat", muscles: ["quads", "glutes"], requires: [], load: 1, aliases: ["air squat", "bodyweight squat", "squat"] }),
 
   // ── Hinge ──
   E({ id: "bb_deadlift", name: "Barbell Deadlift", pattern: "hinge", muscles: ["hamstrings", "glutes", "lower_back", "upper_back"], requires: ["barbell"], load: 3, aliases: ["deadlift", "conventional deadlift", "dl"] }),
@@ -76,15 +79,18 @@ export const EXERCISES: Exercise[] = [
   E({ id: "cable_pull_through", name: "Cable Pull-Through", pattern: "hinge", muscles: ["glutes", "hamstrings"], requires: ["cable_machine"], load: 2, aliases: ["pull through"] }),
   E({ id: "bb_hip_thrust", name: "Barbell Hip Thrust", pattern: "hinge", muscles: ["glutes", "hamstrings"], requires: ["barbell", "flat_bench"], load: 3, aliases: ["hip thrust"] }),
   E({ id: "db_hip_thrust", name: "DB Hip Thrust", pattern: "hinge", muscles: ["glutes", "hamstrings"], requires: ["dumbbells", "bench"], load: 2, dbLimited: true }),
-  E({ id: "sl_glute_bridge", name: "Single-Leg Glute Bridge", pattern: "hinge", muscles: ["glutes", "hamstrings"], requires: [], load: 1, unilateral: true, aliases: ["glute bridge"] }),
+  E({ id: "sl_glute_bridge", name: "Single-Leg Glute Bridge", pattern: "hinge", muscles: ["glutes", "hamstrings"], requires: [], load: 1, unilateral: true, aliases: ["single leg glute bridge"] }),
+  E({ id: "glute_bridge", name: "Glute Bridge", pattern: "hinge", muscles: ["glutes", "hamstrings"], requires: [], load: 1, aliases: ["glute bridge", "bridge", "hip bridge"] }),
 
   // ── Lunge / single leg ──
   E({ id: "bb_split_squat", name: "Barbell Split Squat", pattern: "lunge", muscles: ["quads", "glutes", "adductors"], requires: ["barbell", "squat_rack"], load: 3, unilateral: true }),
   E({ id: "smith_split_squat", name: "Smith Split Squat", pattern: "lunge", muscles: ["quads", "glutes", "adductors"], requires: ["smith_machine"], load: 3, unilateral: true }),
   E({ id: "db_bulgarian", name: "DB Bulgarian Split Squat", pattern: "lunge", muscles: ["quads", "glutes", "adductors"], requires: ["dumbbells", "bench"], load: 2, unilateral: true, dbLimited: true, aliases: ["bulgarian split squat", "rfess", "rear foot elevated split squat", "bss"] }),
-  E({ id: "db_reverse_lunge", name: "DB Reverse Lunge", pattern: "lunge", muscles: ["quads", "glutes"], requires: ["dumbbells"], load: 2, unilateral: true, dbLimited: true, aliases: ["reverse lunge", "lunge", "walking lunge"] }),
+  E({ id: "db_reverse_lunge", name: "DB Reverse Lunge", pattern: "lunge", muscles: ["quads", "glutes"], requires: ["dumbbells"], load: 2, unilateral: true, dbLimited: true, aliases: ["reverse lunge", "walking lunge", "db lunge"] }),
   E({ id: "db_step_up", name: "DB Step-Up", pattern: "lunge", muscles: ["quads", "glutes"], requires: ["dumbbells", "step_box"], load: 2, unilateral: true, dbLimited: true, aliases: ["step up"] }),
-  E({ id: "bw_split_squat", name: "Bodyweight Split Squat (pause)", pattern: "lunge", muscles: ["quads", "glutes"], requires: [], load: 1, unilateral: true, aliases: ["split squat"] }),
+  E({ id: "bw_lunge", name: "Bodyweight Lunge", pattern: "lunge", muscles: ["quads", "glutes"], requires: [], load: 1, unilateral: true, aliases: ["bodyweight lunge", "alternating lunge", "lunge"] }),
+  E({ id: "bw_step_up", name: "Step-Up", pattern: "lunge", muscles: ["quads", "glutes"], requires: ["step_box"], load: 1, unilateral: true, aliases: ["bodyweight step up", "box step up"] }),
+  E({ id: "bw_split_squat", name: "Bodyweight Split Squat", pattern: "lunge", muscles: ["quads", "glutes"], requires: [], load: 1, unilateral: true, aliases: ["split squat"] }),
 
   // ── Horizontal push ──
   E({ id: "bb_bench", name: "Barbell Bench Press", pattern: "h_push", muscles: ["chest", "front_delts", "triceps"], requires: ["barbell", "flat_bench"], load: 3, aliases: ["bench press", "bench", "flat bench"] }),
@@ -94,7 +100,8 @@ export const EXERCISES: Exercise[] = [
   E({ id: "machine_chest_press", name: "Machine Chest Press", pattern: "h_push", muscles: ["chest", "front_delts", "triceps"], requires: ["chest_press"], load: 2, aliases: ["chest press"] }),
   E({ id: "cable_press", name: "Standing Cable Press", pattern: "h_push", muscles: ["chest", "front_delts", "triceps"], requires: ["cable_machine"], load: 2, aliases: ["cable fly", "cable chest press"] }),
   E({ id: "dips", name: "Dips", pattern: "h_push", muscles: ["chest", "triceps", "front_delts"], requires: ["dip_station"], load: 2, aliases: ["dip", "chest dip"] }),
-  E({ id: "pushup", name: "Push-Up (tempo / deficit)", pattern: "h_push", muscles: ["chest", "front_delts", "triceps"], requires: [], load: 1, aliases: ["push up", "pushup", "push-up"] }),
+  E({ id: "knee_pushup", name: "Knee Push-Up", pattern: "h_push", muscles: ["chest", "front_delts", "triceps"], requires: [], load: 1, aliases: ["knee push up", "modified push up", "incline push up", "wall push up"] }),
+  E({ id: "pushup", name: "Push-Up", pattern: "h_push", muscles: ["chest", "front_delts", "triceps"], requires: [], load: 1, aliases: ["push up", "pushup", "push-up"] }),
 
   // ── Vertical push ──
   E({ id: "bb_ohp", name: "Barbell Overhead Press", pattern: "v_push", muscles: ["front_delts", "side_delts", "triceps"], requires: ["barbell"], load: 3, aliases: ["ohp", "overhead press", "military press", "press"] }),
@@ -131,8 +138,8 @@ export const EXERCISES: Exercise[] = [
   E({ id: "sissy_squat", name: "Sissy Squat", pattern: "knee_ext", muscles: ["quads"], requires: [], load: 1 }),
 
   // ── Arms / delts ──
-  E({ id: "bb_curl", name: "Barbell Curl", pattern: "biceps", muscles: ["biceps", "forearms"], requires: ["barbell"], load: 2, aliases: ["curl", "bicep curl", "ez bar curl"] }),
-  E({ id: "db_curl", name: "Dumbbell Curl", pattern: "biceps", muscles: ["biceps", "forearms"], requires: ["dumbbells"], load: 2, aliases: ["db curl", "hammer curl", "incline curl"] }),
+  E({ id: "bb_curl", name: "Barbell Curl", pattern: "biceps", muscles: ["biceps", "forearms"], requires: ["barbell"], load: 2, aliases: ["bb curl", "ez bar curl"] }),
+  E({ id: "db_curl", name: "Dumbbell Curl", pattern: "biceps", muscles: ["biceps", "forearms"], requires: ["dumbbells"], load: 2, aliases: ["db curl", "curl", "bicep curl", "hammer curl", "incline curl"] }),
   E({ id: "cable_curl", name: "Cable Curl", pattern: "biceps", muscles: ["biceps"], requires: ["cable_machine"], load: 2 }),
   E({ id: "band_curl", name: "Band Curl", pattern: "biceps", muscles: ["biceps"], requires: ["bands"], load: 1 }),
   E({ id: "cable_pushdown", name: "Cable Triceps Pushdown", pattern: "triceps", muscles: ["triceps"], requires: ["cable_machine"], load: 2, aliases: ["pushdown", "tricep pushdown", "rope pushdown"] }),
@@ -149,13 +156,35 @@ export const EXERCISES: Exercise[] = [
   E({ id: "cable_crunch", name: "Cable Crunch", pattern: "core", muscles: ["abs"], requires: ["cable_machine"], load: 2 }),
   E({ id: "hanging_leg_raise", name: "Hanging Leg Raise", pattern: "core", muscles: ["abs", "obliques"], requires: ["pullup_bar"], load: 1, aliases: ["leg raise", "hanging knee raise"] }),
   E({ id: "pallof_press", name: "Cable Pallof Press", pattern: "core", muscles: ["obliques", "abs"], requires: ["cable_machine"], load: 1, aliases: ["pallof"] }),
-  E({ id: "ab_wheel", name: "Ab Wheel / Plank Walkout", pattern: "core", muscles: ["abs"], requires: [], load: 1, aliases: ["ab wheel", "rollout", "plank"] }),
+  E({ id: "ab_wheel", name: "Ab Wheel / Plank Walkout", pattern: "core", muscles: ["abs"], requires: [], load: 1, aliases: ["ab wheel", "rollout", "plank walkout"] }),
   E({ id: "dead_bug", name: "Dead Bug", pattern: "core", muscles: ["abs"], requires: [], load: 1 }),
+  E({ id: "plank", name: "Plank", pattern: "core", muscles: ["abs", "obliques"], requires: [], load: 1, aliases: ["plank", "forearm plank", "high plank"] }),
+  E({ id: "side_plank", name: "Side Plank", pattern: "core", muscles: ["obliques", "abs"], requires: [], load: 1, unilateral: true }),
+  E({ id: "crunch", name: "Crunch", pattern: "core", muscles: ["abs"], requires: [], load: 1, aliases: ["crunches", "sit up", "situp"] }),
+  E({ id: "bicycle_crunch", name: "Bicycle Crunch", pattern: "core", muscles: ["abs", "obliques"], requires: [], load: 1, aliases: ["bicycle", "bicycles"] }),
+  E({ id: "bird_dog", name: "Bird Dog", pattern: "core", muscles: ["abs", "lower_back"], requires: [], load: 1 }),
+  E({ id: "wall_sit", name: "Wall Sit", pattern: "knee_ext", muscles: ["quads"], requires: [], load: 1 }),
   E({ id: "calf_raise_machine", name: "Smith Calf Raise", pattern: "calves", muscles: ["calves"], requires: ["smith_machine"], load: 2, aliases: ["calf raise", "standing calf raise"] }),
   E({ id: "db_calf_raise", name: "Single-Leg DB Calf Raise", pattern: "calves", muscles: ["calves"], requires: ["dumbbells"], load: 1, unilateral: true }),
-  E({ id: "bw_calf_raise", name: "Single-Leg Calf Raise (pause)", pattern: "calves", muscles: ["calves"], requires: [], load: 1, unilateral: true }),
+  E({ id: "bw_calf_raise", name: "Bodyweight Calf Raise", pattern: "calves", muscles: ["calves"], requires: [], load: 1, unilateral: true }),
   E({ id: "farmer_carry", name: "DB Farmer Carry", pattern: "carry", muscles: ["forearms", "traps", "abs"], requires: ["dumbbells"], load: 2, dbLimited: true, aliases: ["farmers walk", "farmer walk", "carry"] }),
   E({ id: "suitcase_carry", name: "KB Suitcase Carry", pattern: "carry", muscles: ["obliques", "forearms"], requires: ["kettlebell"], load: 2, unilateral: true }),
+
+  // ── Cardio / stretching ──
+  E({ id: "treadmill_run", name: "Treadmill Run / Jog", pattern: "cardio", muscles: ["heart", "quads", "calves"], requires: ["treadmill"], load: 2, aliases: ["treadmill", "treadmill run", "treadmill jog"] }),
+  E({ id: "treadmill_walk", name: "Incline Treadmill Walk", pattern: "cardio", muscles: ["heart", "glutes", "calves"], requires: ["treadmill"], load: 1, aliases: ["incline walk", "treadmill walk"] }),
+  E({ id: "bike", name: "Exercise Bike", pattern: "cardio", muscles: ["heart", "quads"], requires: ["exercise_bike"], load: 2, aliases: ["bike", "cycling", "cycle", "spin", "stationary bike", "peloton"] }),
+  E({ id: "elliptical", name: "Elliptical", pattern: "cardio", muscles: ["heart", "quads", "glutes"], requires: ["elliptical"], load: 2, aliases: ["cross trainer"] }),
+  E({ id: "rower", name: "Rowing Machine", pattern: "cardio", muscles: ["heart", "upper_back", "quads"], requires: ["rower"], load: 2, aliases: ["rowing", "erg", "rower", "rowing machine"] }),
+  E({ id: "jump_rope", name: "Jump Rope", pattern: "cardio", muscles: ["heart", "calves"], requires: ["jump_rope"], load: 2, aliases: ["skipping", "jump rope", "skip rope"] }),
+  E({ id: "brisk_walk", name: "Brisk Walk", pattern: "cardio", muscles: ["heart", "glutes", "calves"], requires: [], load: 1, aliases: ["walk", "walking", "hike", "hiking"] }),
+  E({ id: "outdoor_run", name: "Outdoor Run / Jog", pattern: "cardio", muscles: ["heart", "quads", "calves"], requires: [], load: 2, aliases: ["run", "running", "jog", "jogging", "outdoor run"] }),
+  E({ id: "jumping_jacks", name: "Jumping Jacks", pattern: "cardio", muscles: ["heart", "calves"], requires: [], load: 1, aliases: ["jumping jack", "star jumps"] }),
+  E({ id: "high_knees", name: "High Knees", pattern: "cardio", muscles: ["heart", "quads"], requires: [], load: 2, aliases: ["running in place"] }),
+  E({ id: "mountain_climbers", name: "Mountain Climbers", pattern: "cardio", muscles: ["heart", "abs"], requires: [], load: 2, aliases: ["mountain climber"] }),
+  E({ id: "stretching", name: "Stretching", pattern: "mobility", muscles: ["hamstrings", "glutes", "lower_back"], requires: [], load: 1, aliases: ["stretch", "cool down", "warm up", "mobility"] }),
+  E({ id: "yoga_flow", name: "Yoga Flow", pattern: "mobility", muscles: ["hamstrings", "glutes", "abs"], requires: [], load: 1, aliases: ["yoga", "sun salutation"] }),
+  E({ id: "burpees", name: "Burpees", pattern: "cardio", muscles: ["heart", "chest", "quads"], requires: [], load: 2, aliases: ["burpee"] }),
 ];
 
 export const EXERCISE_BY_ID = Object.fromEntries(EXERCISES.map((e) => [e.id, e]));
@@ -176,6 +205,8 @@ export const PATTERN_LABEL: Record<Pattern, string> = {
   core: "Core",
   calves: "Calves",
   carry: "Carry",
+  cardio: "Cardio",
+  mobility: "Stretch & mobility",
 };
 
 /** Fallback patterns to borrow from when nothing in the same pattern is available. */
@@ -193,6 +224,7 @@ export const RELATED_PATTERNS: Partial<Record<Pattern, Pattern[]>> = {
   biceps: ["h_pull"],
   delts: ["v_push"],
   carry: ["core"],
+  cardio: ["core"],
 };
 
 function normalize(s: string) {
@@ -204,7 +236,9 @@ function normalize(s: string) {
     .replace(/\s+/g, " ")
     .trim()
     .split(" ")
-    .map((w) => (w.length >= 3 && w.endsWith("s") && !w.endsWith("ss") ? w.slice(0, -1) : w))
+    .map((w) =>
+      /(ch|sh|x)es$/.test(w) ? w.slice(0, -2) : w.length >= 3 && w.endsWith("s") && !w.endsWith("ss") ? w.slice(0, -1) : w,
+    )
     .join(" ");
 }
 
