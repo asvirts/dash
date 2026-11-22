@@ -1,23 +1,13 @@
 {
-  "name": "shadcn-ui-monorepo",
-  "version": "0.0.1",
+  "name": "anygym",
   "private": true,
+  "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md,json}\""
+    "web": "npm run dev -w @anygym/web",
+    "mobile": "npm run start -w @anygym/mobile",
+    "build:web": "npm run build -w @anygym/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test -w @anygym/core"
   },
-  "devDependencies": {
-    "@workspace/eslint-config": "workspace:*",
-    "@workspace/typescript-config": "workspace:*",
-    "prettier": "^3.4.2",
-    "prettier-plugin-tailwindcss": "^0.6.10",
-    "turbo": "^2.3.0",
-    "typescript": "5.5.4"
-  },
-  "packageManager": "pnpm@9.12.3",
-  "engines": {
-    "node": ">=20"
-  }
+  "engines": { "node": ">=20" }
 }
